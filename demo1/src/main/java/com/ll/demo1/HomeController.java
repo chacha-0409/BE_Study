@@ -2,6 +2,7 @@ package com.ll.demo1;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 // 서버용 주석 - 아래는 모두 고객x서버o에서
@@ -11,15 +12,22 @@ public class HomeController {
     // 액션메서드 어노테이션 - 외부에서 호출 가능한 메서드
     @GetMapping("a")
     @ResponseBody // 브라우저에 리턴 어노테이션
-    public String hello() {
-        return "Hello";
+    public String hello(
+            String age,
+            String id
+    ) { // http://localhost:8080/a?age=22&id=1
+        return "안녕하세요. %s번 사람의 나이는 %s살 입니다.".formatted(id, age);
     }
 
     @GetMapping("b")
     @ResponseBody
-    public String hello2() {
-        System.out.println("Hello2!");
+    public String plus( // 변수이름!=쿼리파라미터 ok
+            @RequestParam("a") String num1Str,
+            @RequestParam("b") String num2Str
+    ) {
+        int num1 = Integer.parseInt(num1Str);
+        int num2 = Integer.parseInt(num2Str);
 
-        return "안녕하세요";
+        return "a + b = %d".formatted(num1 + num2);
     }
 }
